@@ -1,7 +1,7 @@
 .sideNavbarContainer{
     background-color: #F4F5F7;
     height: 100vh;
-    flex: 0 1 15%;
+    flex: 0 1 10%;
     padding-inline: 1rem;
     display: flex;
     flex-direction: column;
@@ -25,6 +25,7 @@
 .navs .navLinks {
     text-decoration: none;
 }
-.navs ul {
-    
+.navLinks {
+    display: flex;
+    gap: 0.5rem;
 }
