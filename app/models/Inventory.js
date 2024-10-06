@@ -1,22 +1,15 @@
 import mongoose from 'mongoose';
+import Items from './Items';
 
 const inventorySchema = new mongoose.Schema({
-    docNumber: {
-        type: Number,
-        required: [true, "Please add doc number"],
-        default: () => {
-            let max = 0;
-            Inventory.find().sort({ docNumber: -1 }).limit(1).then(doc => {
-                if (doc.length) {
-                    max = doc[0].docNumber;
-                }
-            });
-            return max + 1;
-        }
-        },
+
     item: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Items',
+        ref: Items,
+        required: true
+    },
+    date: {
+        type: Date,
         required: true
     },
     quantity: {
@@ -24,27 +17,32 @@ const inventorySchema = new mongoose.Schema({
         required: true
     },
     salesOrder: {
-        type: string,
-        required: true
-    },
-    initalBalance: { // befor transaction
-        type: Number,
-        required: true
-    },
-    currentBalance: { // after transaction
         type: Number,
         required: true
     },
     paymentDetail: { //check number or transfer number
-        type: string,
+        type: Number,
+        default: null,
     },
-    deliveryDetail: {  // GRN number
-        type: string,
-    },
-    transactionType: { // paid or free
-        type: string,
+    freeOrPaid: { // paid or free
+        type: String,
         enum: ["paid", "free"],
-    }
+    },
+    status: { // untouched pending delivered 
+        type: String,
+        enum: ["untouched", "pending", "delivered"],
+        required: true
+    },
+    delivery: [
+        
+        {
+            date: {type: Date, required: true},
+            quantity: {type: Number, required: true},
+            grn: {type: Number, required: true},
+            reamining: {type: Number, required: true},
+        }
+    ]
+    
     
     
 },

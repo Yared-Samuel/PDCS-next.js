@@ -16,7 +16,7 @@ const SideNavbar = () => {
         <ul className='ul'>
           <Link className={styles.navLinks} href={'/'}><GoHome /><li className='lis'>Home </li></Link>
           <Link className={styles.navLinks} href={'/pages/payment'}><BsCash /><li className='lis'>Payments </li></Link>
-          <Link className={styles.navLinks} href={'/'}><CiDeliveryTruck /><li className='lis'>Deliveries </li></Link>
+          <Link className={styles.navLinks} href={'/pages/delivery'}><CiDeliveryTruck /><li className='lis'>Deliveries </li></Link>
           <Link className={styles.navLinks} href={'/'}><PiNewspaperClippingLight /><li className='lis'>Reports </li></Link>          
           <Link className={styles.navLinks} href={'/pages/item'}><BiSitemap /><li className='lis'>Items </li></Link>          
         </ul>
