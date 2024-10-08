@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SideNavbar from "./components/SideNavbar";
-import Header from "./components/Header";
+import Navbar from "./components/Navbar";
 
 
 export const metadata: Metadata = {
@@ -15,11 +15,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="layout-main">
-      <body>
-      <SideNavbar />
-      <div className="headerMainContainer">
-        <Header />
+    <html lang="en" data-theme="nord" className="">
+      <body className="flex flex-col">
+      <Navbar />
+
+      <div className="w-full">
         {children}
       </div>
         

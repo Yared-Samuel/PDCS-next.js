@@ -7,10 +7,12 @@ import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-dt';
 import 'datatables.net-select-dt';
 import 'datatables.net-responsive-dt';
+import Link from "next/link";
+import { TbTruckDelivery } from "react-icons/tb";
 const PaymentForm = () => {
   const [error, setError] = React.useState("");
-  const [items, setItems] = useState([]);
-  const [payments, setPayments] = useState([]);
+  const [items, setItems] = React.useState([]);
+  const [payments, setPayments] = React.useState([]);
 
   DataTable.use(DT);
   const router = useRouter();
@@ -97,13 +99,13 @@ console.log(payments)
     itemList()
   }, [])
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Payment Form</h2>
-      <div className={styles.inputContainer}>
-        <form className={styles.form} onSubmit={handleSubmit}>
+    <div className="bg-lime-900">
+      <h2 >Payment Form</h2>
+      <div >
+        <form  onSubmit={handleSubmit}>
           <div>
 
-          <div className={styles.formGroup}>
+          <div >
             <label htmlFor="item">Item</label>
             <select id="item" name="item">
               <option  value="" >Select an item</option>
@@ -113,12 +115,12 @@ console.log(payments)
             </select>
           </div>
 
-          <div className={styles.formGroup}>
+          <div >
             <label htmlFor="date">Date</label>
             <input type="date" id="date" name="date" placeholder="Date" />
           </div>
 
-          <div className={styles.formGroup}>
+          <div >
             <label htmlFor="quantity">Quantity</label>
             <input
               type="number"
@@ -130,7 +132,7 @@ console.log(payments)
           </div>
           <div className={styles.inputContainer}>
 
-          <div className={styles.formGroup}>
+          <div >
             <label htmlFor="salesOrder">Sales Order</label>
             <input
               type="number"
@@ -139,7 +141,7 @@ console.log(payments)
               placeholder="Sales Order"
             />
           </div>
-          <div className={styles.formGroup}>
+          <div >
 
             <label htmlFor="paymentDetail">Payment Detail</label>
             <input
@@ -149,7 +151,7 @@ console.log(payments)
               placeholder="Payment Detail"
             />
           </div>
-          <div className={styles.formGroup}>
+          <div >
 
           <label htmlFor="freeOrPaid">Free or Paid</label>
             <select name="freeOrPaid">
@@ -158,8 +160,8 @@ console.log(payments)
             </select>
           </div>
           </div>
-          <div className={styles.formGroup}>
-          <button className={styles.button} type="submit">
+          <div >
+          <button className="btn bg-green-500" type="submit">
             Submit Payment
           </button>
           </div>
@@ -176,6 +178,7 @@ console.log(payments)
                 <th>Status</th>
                 <th>Type</th>
                 <th>Sles Order</th>
+                <th>Deliver</th>
               </tr>
             </thead>
             <tbody>
@@ -188,6 +191,9 @@ console.log(payments)
                   <td>{payment.status}</td>
                   <td>{payment.freeOrPaid}</td>
                   <td>{payment.salesOrder}</td>
+                  <td><Link href={`/pages/delivery/${payment.salesOrder}`}>
+                  <button><TbTruckDelivery size={25} color="green" /></button>
+                  </Link></td>
                 </tr>
               ))}
               
