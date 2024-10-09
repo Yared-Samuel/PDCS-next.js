@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import Inventory from "../../models/Inventory";
 import mongoose from 'mongoose';
 
-export const POST = async (request: any) => {
+export const POST = async (request) => {
 
     const {date, item, quantity, salesOrder, paymentDetail, freeOrPaid } = await request.json();
     if (!item || !quantity || !salesOrder || !paymentDetail || !freeOrPaid) {
@@ -37,7 +37,7 @@ export const POST = async (request: any) => {
         } else {
             return new NextResponse("Payment already exists", { status: 400 });
         }
-    } catch (err: any) {
+    } catch (err) {
         console.log(err)
         return new NextResponse(err, { status: 500 });
     }
@@ -46,12 +46,12 @@ export const POST = async (request: any) => {
 }
 
 
-export const GET = async (request: any) => {
+export const GET = async (request) => {
     await connect();
     try {
       const inventories = await Inventory.find().populate(["item"]);
       return new NextResponse(JSON.stringify(inventories), { status: 200 });
-    } catch (err: any) {
+    } catch (err) {
       return new NextResponse(err, { status: 500 });
       
     }

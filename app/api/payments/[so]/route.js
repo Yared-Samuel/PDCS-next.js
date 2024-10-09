@@ -1,9 +1,9 @@
-import connect from "@/app/utils/db";
 import { NextResponse } from "next/server";
-import Inventory from "@/app/models/Inventory";
+import Inventory from "../../../models/Inventory";
+import connect from "../../../utils/db";
 import mongoose from "mongoose";
 
-export async function GET(request: any, { params }: any) {
+export async function GET(request, { params }) {
     const {so} = params;
     await connect();
     const payment = await Inventory.findOne({salesOrder : so}).populate(["item"]);
@@ -13,7 +13,7 @@ export async function GET(request: any, { params }: any) {
 }
 
 
-export async function PUT(request: any,{params}: any) {
+export async function PUT(request,{params}) {
     const {so} = params;
     const { date, item, quantity, salesOrder, paymentDetail, freeOrPaid, status, delivery } = await request.json();
     await connect();

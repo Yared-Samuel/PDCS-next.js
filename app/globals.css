@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@import 'datatables.net-dt';
+@import 'datatables.net-responsive-dt';
+@import 'datatables.net-select-dt';

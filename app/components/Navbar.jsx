@@ -1,18 +1,20 @@
 import React from "react";
-import styles from "./Header.module.css";
 import Link from "next/link";
 
 const Header = () => {
   return (
     <div className="navbar bg-neutral text-neutral-content">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <Link href={"/"} className="btn btn-ghost text-xl">GGT</Link>
+      </div>
+      <div className="flex-1">
+        <Link href={"/"} className="btn btn-ghost text-xl">GGT</Link>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li>
             <details>
-              <summary>Parent</summary>
+              <summary>Actions</summary>
               <ul className="bg-neutral rounded-t-none p-4">
                 
                 <Link href={"/pages/payment"}>
