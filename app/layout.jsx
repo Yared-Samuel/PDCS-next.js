@@ -12,7 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="nord" className="">
-      <body className="flex flex-col bg-slate-50">
+      <body className="flex flex-col ">
       <Navbar />
 
       <div className="w-full px-6">

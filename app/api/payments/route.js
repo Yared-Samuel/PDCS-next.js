@@ -14,6 +14,7 @@ export const POST = async (request) => {
 
     await connect();
 
+
     const year = new Date().getFullYear();
     const twoDigitsYear = year.toString().slice(-2);
 
@@ -30,7 +31,6 @@ export const POST = async (request) => {
     });
 
     try {
-        console.log(newInventory)
         const result = await newInventory.save();
         if (result) {
             return new NextResponse("Payment created successfully", { status: 201 });
@@ -48,6 +48,8 @@ export const POST = async (request) => {
 
 export const GET = async (request) => {
     await connect();
+    
+   
     try {
       const inventories = await Inventory.find().populate(["item"]);
       return new NextResponse(JSON.stringify(inventories), { status: 200 });

@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import moment from "moment";
+import remaining from "../../../utils/remaingin";
 
 
 
@@ -9,10 +11,8 @@ const Deliver = ( params ) => {
   const router = useRouter();
 
   const { so } = params.params;
-  console.log(so);
 
   const getPaymentBySo = async ( so ) => {
-    console.log(so)
     try {
       const res = await fetch(`/api/payments/${so}`, {
         method: "GET",
@@ -20,24 +20,28 @@ const Deliver = ( params ) => {
           "Content-Type": "application/json",
         },
       });
-      console.log(res)
       if (!res.ok) {
         throw new Error("Failed to fetch Payment");
       }
       const payment = await res.json();
-      console.log(payment);
-      setGetPayment(payment);
+      return payment;      
+      
     } catch (error) {
       console.log(error);
     }
   };
 
   React.useEffect(() => {
-    getPaymentBySo(so);
+    const fetchPayment = async () => {
+      const payment = await getPaymentBySo(so);
+      setGetPayment(payment);
+    };
+  
+    fetchPayment();
   }, [so]);
-  console.log(getPayment)
+
   const handleSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     const newDate = e.target[0].value;
     const newQuantity = e.target[1].value;
     const newGrn = e.target[2].value;
@@ -51,7 +55,7 @@ const Deliver = ( params ) => {
       freeOrPaid,
       status,
       delivery,
-    } = getPayment.payment;
+    } = getPayment;
     try {
       const res = await fetch(`/api/payments/${so}`, {
         method: "PUT",
@@ -87,43 +91,59 @@ const Deliver = ( params ) => {
       console.log(error);
     }
   };
+
+
+  const remain = remaining(getPayment)
   
   return (
     <>
-      <div className="stats shadow flex justify-center">
-        <div className="stat place-items-center">
-          <div className="stat-title">Item</div>
-          <div className="stat-value">{getPayment.payment}</div>
-          {/* <div className="stat-desc">From January 1st to February 1st</div> */}
+    <div className="my-6 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-slate-300 rounded">
+      
+        <dl  className="flex gap-4 justify-between -my-3 divide-y divide-gray-accent-200 text-sm">
+        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <dd className="badge badge-lg text-gray-700 sm:col-span-2 ">{getPayment?.item?.name}</dd>
         </div>
-
-        <div className="stat place-items-center">
-          <div className="stat-title">Remaining @ BGI</div>
-          <div className="stat-value text-secondary">4400</div>
-          {/* <div className="stat-desc text-secondary">↗︎ 40 (2%)</div> */}
+    
+        
+    
+        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <dt className="font-medium text-gray-900">salesOrder</dt>
+          <dd className="badge badge-lg text-gray-700 sm:col-span-2">{getPayment.salesOrder}</dd>
         </div>
-
-        <div className="stat place-items-center">
-          <div className="stat-title">Delivered</div>
-          <div className="stat-value">2200</div>
-          <div className="stat-desc">09-02-2024</div>
+        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <dt className="font-medium text-gray-900">Paid Quantity</dt>
+          
+          <dd className="badge badge-lg text-gray-700 sm:col-span-2">{getPayment.quantity}</dd>
         </div>
-      </div>
+        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <dt className="font-medium text-gray-900">Remaining</dt>
+          <dd className="badge badge-lg text-gray-700 sm:col-span-2">{remain}</dd>
+        </div>
+    
+        
+    
+        
+      </dl>
+      
+      
+  
+</div>
 
 
 
-      <div className="flex justify-center">
-      <div className="card bg-base-200 w-2/3 shadow-xl mb-6 ">
+
+      <div className="flex justify-start">
+      <div className="card bg-base-200 w-5/12 shadow-xl mb-6 ">
         <div className="card-body">
           <h2 className="card-title">Delivery</h2>
-          <form onSubmit={handleSubmit(e => e.preventDefault())} className="flex flex-col gap-2">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
             
-          <label className="input input-bordered flex items-center gap-2 w-2/4">
-          Date
+          <label className="input input-bordered flex items-center gap-2 w-full">
+          
               <input type="date" id="date" name="date" placeholder="Date" className="grow"/>
               </label>
             
-              <label className="input input-bordered flex items-center gap-2 w-2/4">
+              <label className="input input-bordered flex items-center gap-2 w-full">
               Quantity
               <input
                 type="number"
@@ -134,11 +154,11 @@ const Deliver = ( params ) => {
               />
               </label>
             
-              <label className="input input-bordered flex items-center gap-2 w-2/4">
+              <label className="input input-bordered flex items-center gap-2 w-full">
               GRN
               <input type="number" id="grn" name="grn" placeholder="GRN" className="grow"/>
               </label>
-              <div className="card-actions justify-end">
+              <div className="card-actions justify-start">
             <button className="btn btn-primary" type="submit">Submit</button>
             </div>
           </form>
@@ -147,32 +167,28 @@ const Deliver = ( params ) => {
 
 
 
-        <div className="w-1/3">
-  <table className="table">
+        <div className="overflow-x-auto w-7/12">
+  <table className="table table-zebra table-auto  ">
     {/* head */}
-    <thead>
+    <thead className="text-center border border-base-300 shadow-sm">
       <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
+        <th className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Date</th>
+        <th className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Grn</th>
+        <th className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Quantity</th>
       </tr>
     </thead>
-    <tbody>
-      {/* row 1 */}
-      <tr>
-        <th>1</th>
-        <td>Cy Ganderton</td>
-        <td>Quality Control Specialist</td>
-        <td>Blue</td>
-      </tr>
-      {/* row 2 */}
-      <tr>
-        <th>2</th>
-        <td>Hart Hagerty</td>
-        <td>Desktop Support Technician</td>
-        <td>Purple</td>
-      </tr>
+    <tbody className=" dark:divide-neutral-700">
+      {
+        getPayment?.delivery?.map((item) => (
+          <tr key={item._id}>
+            <th>{moment(item.date).format('ll')}</th>
+            <td>{item.grn}</td>
+            <td>{item.quantity}</td>
+          </tr>
+        ))
+      }
+      
+      
     </tbody>
   </table>
 </div>

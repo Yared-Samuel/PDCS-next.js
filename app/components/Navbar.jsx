@@ -15,7 +15,7 @@ const Header = () => {
           <li>
             <details>
               <summary>Actions</summary>
-              <ul className="bg-neutral rounded-t-none p-4">
+              <ul className="bg-neutral rounded-t-none p-4 z-50">
                 
                 <Link href={"/pages/payment"}>
                   <li className="p-2">Payments </li>

@@ -85,7 +85,7 @@ const PaymentForm = () => {
   React.useEffect(() => {
     fetchPayments();
   }, []);
-  console.log(payments);
+  
   const itemList = async () => {
     try {
       const res = await fetch("/api/items", {
@@ -108,7 +108,7 @@ const PaymentForm = () => {
     <>
       <div className="card bg-base-200 w-full shadow-xl mb-6">
         <div className="card-body">
-          <h2 className="card-title">Card title!</h2>
+          <h2 className="card-title">Payment Form</h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex gap-2 justify-between">
               
@@ -197,7 +197,7 @@ const PaymentForm = () => {
           <tbody>
             {payments.map((payment) => (
               <tr key={payment._id}>
-                <td>{moment(payment.date).format("D-MM-YY")}</td>
+                <td>{moment(payment.date).format("ll")}</td>
                 <td>{payment.item.name}</td>
                 <td>{payment.quantity}</td>
                 <td>{payment.paymentDetail}</td>
