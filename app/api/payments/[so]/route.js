@@ -17,6 +17,7 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   const { so } = params;
   const {
+    newQuantity,
     date,
     item,
     quantity,
@@ -34,10 +35,9 @@ export async function PUT(request, { params }) {
   const paidBalance = payment?.quantity;
 
   const deliveryArray = payment?.delivery;
-
-
-  await balanceCheck( quantity, paidBalance, deliveryArray);
-  const status = await statusCheck( quantity, paidBalance, deliveryArray)
+  console.log(newQuantity)
+  await balanceCheck( newQuantity, paidBalance, deliveryArray);
+  const status = await statusCheck( newQuantity, paidBalance, deliveryArray)
   const id = payment._id;
 
   await Inventory.findByIdAndUpdate(id, {

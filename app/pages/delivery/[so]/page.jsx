@@ -65,6 +65,7 @@ const Deliver = ( params ) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          newQuantity,
           date,
           item,
           quantity,
