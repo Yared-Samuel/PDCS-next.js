@@ -139,7 +139,7 @@ const Deliver = ( params ) => {
 
 
       <div className="flex justify-start">
-      <div className={`card bg-base-200 w-5/12 shadow-xl mb-6 ${remainingQuantity == getPayment?.quantity ? 'hidden' : ''}`} >
+      <div className={`card bg-base-200 w-5/12 shadow-xl mb-6 ${remainingQuantity == 0 ? 'hidden' : ''}`} >
         <div className="card-body">
           <h2 className="card-title">Delivery</h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-2">
