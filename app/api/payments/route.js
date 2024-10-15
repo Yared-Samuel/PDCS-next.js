@@ -27,7 +27,7 @@ export const POST = async (request) => {
         salesOrder : paddedSO,
         paymentDetail,
         freeOrPaid,
-        status : "delivered"
+        status : "remaining"
     });
 
     try {
@@ -51,7 +51,7 @@ export const GET = async (request) => {
     
    
     try {
-      const inventories = await Inventory.find().populate(["item"]);
+      const inventories = await Inventory.find({status: "remaining"}).populate(["item"]);
       return new NextResponse(JSON.stringify(inventories), { status: 200 });
     } catch (err) {
       return new NextResponse(err, { status: 500 });

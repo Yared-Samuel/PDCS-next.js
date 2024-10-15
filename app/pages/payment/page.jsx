@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import styles from "./page.module.css";
+import React from "react";
 import { useRouter } from "next/navigation";
 import moment from "moment";
 import DataTable from "datatables.net-react";
@@ -73,12 +72,14 @@ const PaymentForm = () => {
       const res = await fetch("/api/payments", {
         method: "GET",
         headers: {
+          
           "Content-Type": "application/json",
         },
       });
       const data = await res.json();
       setPayments(data);
     } catch (error) {
+      setError(error)
       console.log(error);
     }
   };
@@ -95,14 +96,20 @@ const PaymentForm = () => {
         },
       });
       const data = await res.json();
-      setItems(data);
+      return data;
     } catch (error) {
       console.log(error);
+      setError(error);
     }
   };
 
   React.useEffect(() => {
-    itemList();
+    const fetchItems = async () => {
+      const items = await itemList();
+      setItems(items);
+
+    }
+    fetchItems();
   }, []);
   return (
     <>

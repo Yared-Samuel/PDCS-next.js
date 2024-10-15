@@ -8,6 +8,8 @@ import remaining from "../../../utils/remaingin";
 
 const Deliver = ( params ) => {
   const [getPayment, setGetPayment] = useState([]);
+  const [remainingQuantity, setRemainingQuantity] = useState(0);
+
   const router = useRouter();
 
   const { so } = params.params;
@@ -93,7 +95,13 @@ const Deliver = ( params ) => {
   };
 
 
-  const remain = remaining(getPayment)
+  React.useEffect(() => {
+    if (getPayment) {
+      const result = remaining(getPayment);
+      setRemainingQuantity(result);
+    }
+  }, [getPayment]); // This effect depends on `getPayment`
+
   
   return (
     <>
@@ -117,15 +125,13 @@ const Deliver = ( params ) => {
         </div>
         <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
           <dt className="font-medium text-gray-900">Remaining</dt>
-          <dd className="badge badge-lg text-gray-700 sm:col-span-2">{remain}</dd>
+          <dd className="badge badge-lg text-gray-700 sm:col-span-2">{remainingQuantity}</dd>
         </div>
     
         
     
         
-      </dl>
-      
-      
+      </dl> 
   
 </div>
 
@@ -133,7 +139,7 @@ const Deliver = ( params ) => {
 
 
       <div className="flex justify-start">
-      <div className="card bg-base-200 w-5/12 shadow-xl mb-6 ">
+      <div className={`card bg-base-200 w-5/12 shadow-xl mb-6 ${remainingQuantity == getPayment?.quantity ? 'hidden' : ''}`} >
         <div className="card-body">
           <h2 className="card-title">Delivery</h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-2">
@@ -190,6 +196,16 @@ const Deliver = ( params ) => {
       
       
     </tbody>
+    <tfoot className="text-center border border-base-300 shadow-sm">
+      <tr>  
+        <th className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Remaining</th>
+        </tr>
+      <tr>  
+        <td className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">{remainingQuantity}</td>
+        </tr>
+
+    </tfoot>   
+
   </table>
 </div>
       </div>

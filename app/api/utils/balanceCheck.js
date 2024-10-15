@@ -1,13 +1,7 @@
-import Inventory from "../../models/Inventory";
-
-const balanceCheck = async (so, quantity) => {
+const balanceCheck = async ( quantity, paidBalance, deliveryArray) => {
     let deliveredBalance = 0
-  const inventory = await Inventory.findOne({ salesOrder: so });
 
-  const paidBalance = inventory?.quantity;
-
-  const deliveryArray = inventory?.delivery;
-
+  
   if (deliveryArray.length > 0) {
     deliveredBalance = deliveryArray.reduce((acc, curr) => acc + curr.quantity, 0) 
     console.log("there is balance")

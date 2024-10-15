@@ -1,5 +1,5 @@
 const remaining = (getPayment) => {
-    let delivered
+    let delivered = 0
     if (getPayment?.delivery && getPayment.delivery.length === 0) {
         delivered = 0
     }else if (getPayment?.delivery) {
@@ -11,7 +11,6 @@ const remaining = (getPayment) => {
     const paid = getPayment?.quantity
 
     let remaining = paid - delivered
-    console.log(remaining)
     return remaining
 }
 

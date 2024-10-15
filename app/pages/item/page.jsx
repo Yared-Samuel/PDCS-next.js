@@ -1,6 +1,5 @@
 'use client'
 import React, { useState } from "react";
-import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 
 
@@ -8,7 +7,7 @@ const Item = () => {
   const [error, setError] = React.useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const name = e.target[0].value;
@@ -66,34 +65,38 @@ const Item = () => {
 
   console.log(items)
     return (
-      <div className={styles.container}>
-        <h2 className={styles.title}>Item Form</h2>
-        <div>
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.formGroup}>
-              <label htmlFor="name">Name</label>
+      <div className="flex justify-between gap-10">
+      <div className="card bg-base-200 w-full shadow-xl mb-6">
+        <div className="card-body">
+        <h2 className="card-title">Item Form</h2>
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            
+              <label htmlFor="name" className="input input-bordered flex items-center gap-2 w-2/4">Name
               <input
                 type="text"
                 id="name"
                 name="name"
-                placeholder="Please enter name of the Item"
+                placeholder="Please Enter Item Name"
               />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="salesNumber">Item Type</label>
-              <select id="type" name="type">
-                <option disabled value="">Please Select Type</option>
+              </label>
+            
+            
+              <select id="type" name="type" className="select select-bordered w-2/4 max-w-xs">
+                <option  value={null}>Please Select Type</option>
                 <option value="beer">Beer (Bottle)</option>
                 <option value="draft">Draft (Keg)</option>
                 <option value="wine">Wine</option>
               </select>
-            </div>
+            
+              <div className="card-actions justify-end">
            
-        <button type="submit" className={styles.button}>Create Item</button>
+        <button type="submit" className="btn btn-primary">Create Item</button>
+        </div>
           </form>
         </div>
-        <div>
-          <table className={styles.styledtable}>
+        </div>
+        <div className="card bg-base-200 w-full shadow-xl mb-6 p-6">
+          <table className="">
             <thead>
               <tr>
                 <th>Name</th>

@@ -30,7 +30,7 @@ const inventorySchema = new mongoose.Schema({
     },
     status: { // untouched pending delivered 
         type: String,
-        enum: ["untouched", "pending", "delivered"],
+        enum: ["remaining", "completed"],
         required: true
     },
     delivery: [
