@@ -84,12 +84,14 @@ const Deliver = ( params ) => {
         }),
       });
       console.log(res);
-      if (!res.ok) {
+      if (!res) {
         throw new Error("Failed to fetch Payment");
+      } else {
+        router.refresh();
       }
 
-      router.refresh();
-      router.push(`http://localhost:3000/pages/delivery/${so}`);
+      
+      // router.push(`http://localhost:3000/pages/delivery/${so}`);
     } catch (error) {
       console.log(error);
     }
@@ -174,7 +176,7 @@ const Deliver = ( params ) => {
 
 
 
-        <div className="overflow-x-auto w-7/12">
+        <div className="overflow-x-auto w-5/12">
   <table className="table table-zebra table-auto  ">
     {/* head */}
     <thead className="text-center border border-base-300 shadow-sm">
@@ -184,11 +186,11 @@ const Deliver = ( params ) => {
         <th className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Quantity</th>
       </tr>
     </thead>
-    <tbody className=" dark:divide-neutral-700">
+    <tbody className=" ">
       {
         getPayment?.delivery?.map((item) => (
           <tr key={item._id}>
-            <th>{moment(item.date).format('ll')}</th>
+            <td>{moment(item.date).format('ll')}</td>
             <td>{item.grn}</td>
             <td>{item.quantity}</td>
           </tr>
