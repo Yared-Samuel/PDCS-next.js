@@ -8,8 +8,10 @@ import "datatables.net-select-dt";
 import "datatables.net-responsive-dt";
 import Link from "next/link";
 import { TbTruckDelivery } from "react-icons/tb";
+import Loading from "../../loading";
 const PaymentForm = () => {
   const [error, setError] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
   const [items, setItems] = React.useState([]);
   const [payments, setPayments] = React.useState([]);
 
@@ -67,23 +69,28 @@ const PaymentForm = () => {
     }
   };
 
-  const fetchPayments = async () => {
-    try {
-      const res = await fetch("/api/payments", {
-        method: "GET",
-        headers: {
-          
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      setPayments(data);
-    } catch (error) {
-      setError(error)
-      console.log(error);
-    }
-  };
+  
   React.useEffect(() => {
+    const fetchPayments = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch("/api/payments", {
+          method: "GET",
+          headers: {
+            
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+        setPayments(data);
+      } catch (error) {
+        setError(error)
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchPayments();
   }, []);
   
@@ -113,6 +120,7 @@ const PaymentForm = () => {
   }, []);
   return (
     <>
+    
       <div className="card bg-base-200 w-full shadow-xl mb-6">
         <div className="card-body">
           <h2 className="card-title">Payment Form</h2>
@@ -186,42 +194,46 @@ const PaymentForm = () => {
           </form>
         </div>
       </div>
+      
+
       <div className="card bg-base-200 w-full shadow-xxl overflow-x-auto p-4">
       <h2 className="card-title">Payments</h2>
+      {isLoading && <Loading />}
+      {!isLoading && (
         <DataTable  className="display table table-xs">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Item</th>
-              <th>Quantity</th>
-              <th>Payment</th>
-              <th>Status</th>
-              <th>Type</th>
-              <th>Sles Order</th>
-              <th>Deliver</th>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Payment</th>
+            <th>Type</th>
+            <th>Sles Order</th>
+            <th>Deliver</th>
+          </tr>
+        </thead>
+        <tbody>
+          {payments.map((payment) => (
+            <tr key={payment._id}>
+              <td>{moment(payment.date).format("ll")}</td>
+              <td>{payment.item.name}</td>
+              <td>{payment.quantity}</td>
+              <td>{payment.paymentDetail}</td>
+              <td>{payment.freeOrPaid}</td>
+              <td>{payment.salesOrder}</td>
+              <td>
+                <Link href={`/pages/delivery/${payment.salesOrder}`}>
+                  <button>
+                    <TbTruckDelivery size={25} color="green" />
+                  </button>
+                </Link>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {payments.map((payment) => (
-              <tr key={payment._id}>
-                <td>{moment(payment.date).format("ll")}</td>
-                <td>{payment.item.name}</td>
-                <td>{payment.quantity}</td>
-                <td>{payment.paymentDetail}</td>
-                <td>{payment.status}</td>
-                <td>{payment.freeOrPaid}</td>
-                <td>{payment.salesOrder}</td>
-                <td>
-                  <Link href={`/pages/delivery/${payment.salesOrder}`}>
-                    <button>
-                      <TbTruckDelivery size={25} color="green" />
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </DataTable>
+          ))}
+        </tbody>
+      </DataTable>
+      )}
+        
       </div>
     </>
   );

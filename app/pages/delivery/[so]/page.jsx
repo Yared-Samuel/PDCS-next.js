@@ -3,43 +3,51 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import moment from "moment";
 import remaining from "../../../utils/remaingin";
+import Loading from "../../../loading";
 
 
 
 const Deliver = ( params ) => {
   const [getPayment, setGetPayment] = useState([]);
   const [remainingQuantity, setRemainingQuantity] = useState(0);
+  const [isLoading , setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const { so } = params.params;
 
-  const getPaymentBySo = async ( so ) => {
-    try {
-      const res = await fetch(`/api/payments/${so}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!res.ok) {
-        throw new Error("Failed to fetch Payment");
-      }
-      const payment = await res.json();
-      return payment;      
-      
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  
 
   React.useEffect(() => {
-    const fetchPayment = async () => {
-      const payment = await getPaymentBySo(so);
-      setGetPayment(payment);
+
+
+    const getPaymentBySo = async ( so ) => {
+      setIsLoading(true)
+      try {
+        const res = await fetch(`/api/payments/${so}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!res.ok) {
+          throw new Error("Failed to fetch Payment");
+        }
+        const payment = await res.json();
+        setGetPayment(payment);
+        
+        
+      } catch (error) {
+        console.log(error);
+      }finally {
+        setIsLoading(false)
+      }
     };
+    
+      getPaymentBySo(so)
+    
   
-    fetchPayment();
+    
   }, [so]);
 
   const handleSubmit = async (e) => {
@@ -137,10 +145,6 @@ const Deliver = ( params ) => {
       </dl> 
   
 </div>
-
-
-
-
       <div className="flex justify-start">
       <div className={`card bg-base-200 w-5/12 shadow-xl mb-6 ${remainingQuantity == 0 ? 'hidden' : ''}`} >
         <div className="card-body">
@@ -177,6 +181,8 @@ const Deliver = ( params ) => {
 
 
         <div className="overflow-x-auto w-5/12">
+        {isLoading && <Loading />}
+      {!isLoading && (
   <table className="table table-zebra table-auto  ">
     {/* head */}
     <thead className="text-center border border-base-300 shadow-sm">
@@ -210,6 +216,7 @@ const Deliver = ( params ) => {
     </tfoot>   
 
   </table>
+      )}
 </div>
       </div>
     </>
