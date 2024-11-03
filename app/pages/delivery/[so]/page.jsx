@@ -87,7 +87,7 @@ const Deliver = (params) => {
         router.refresh();
       }
 
-      // router.push(`http://localhost:3000/pages/delivery/${so}`);
+      
     } catch (error) {
       console.log(error);
     }
@@ -98,42 +98,42 @@ const Deliver = (params) => {
       const result = remaining(getPayment);
       setRemainingQuantity(result);
     }
-  }, [getPayment]); // This effect depends on `getPayment`
+  }, [getPayment]); 
 
   return (
     <>
       <div className="my-6 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-slate-300 rounded">
-        <dl className="flex gap-4 justify-between -my-3 divide-y divide-gray-accent-200 text-sm">
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-            <dd className="badge badge-lg text-gray-700 sm:col-span-2 ">
+        <dl className="flex  justify-between -my-3 divide-y divide-gray-accent-200 ">
+          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3  text-[5px] md:text-sm">
+            <dd className="badge badge-lg text-gray-700 sm:col-span-2 text-[10px] md:text-sm">
               {getPayment?.item?.name}
             </dd>
           </div>
 
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3  text-[10px] md:text-sm">
             <dt className="font-medium text-gray-900">salesOrder</dt>
-            <dd className="badge badge-lg text-gray-700 sm:col-span-2">
+            <dd className="badge badge-lg text-gray-700 sm:col-span-2 text-[10px] md:text-sm">
               {getPayment.salesOrder}
             </dd>
           </div>
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3  text-[10px] md:text-sm">
             <dt className="font-medium text-gray-900">Paid Quantity</dt>
 
-            <dd className="badge badge-lg text-gray-700 sm:col-span-2">
+            <dd className="badge badge-lg text-gray-700 sm:col-span-2 text-[10px] md:text-sm">
               {getPayment.quantity}
             </dd>
           </div>
-          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+          <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3  text-[10px] md:text-sm">
             <dt className="font-medium text-gray-900">Remaining</dt>
-            <dd className="badge badge-lg text-gray-700 sm:col-span-2">
+            <dd className="badge badge-lg text-gray-700 sm:col-span-2 text-[10px] md:text-sm">
               {remainingQuantity}
             </dd>
           </div>
         </dl>
       </div>
-      <div className="flex justify-start">
+      <div className="flex flex-col md:flex-row justify-start">
         <div
-          className={`card bg-base-200 w-5/12 shadow-xl mb-6 ${
+          className={`card bg-base-200 w-full md:w-5/12 shadow-xl mb-6 ${
             remainingQuantity == 0 ? "hidden" : ""
           }`}
         >
@@ -180,41 +180,41 @@ const Deliver = (params) => {
           </div>
         </div>
 
-        <div className="overflow-x-auto w-5/12">
+        <div className="overflow-x-auto md:w-5/12 w-full">
           {isLoading && <Loading />}
           {!isLoading && (
-            <table className="table table-zebra table-auto  ">
+            <table className="table table-auto  ">
               {/* head */}
-              <thead className="text-center border border-base-300 shadow-sm">
+              <thead className="text-center  shadow-sm">
                 <tr>
-                  <th className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  <th className="text-start text-xs font-medium text-[#EEEBE3] uppercase ">
                     Date
                   </th>
-                  <th className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  <th className="text-start text-xs font-medium text-[#EEEBE3] uppercase ">
                     Grn
                   </th>
-                  <th className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  <th className="text-start text-xs font-medium text-[#EEEBE3] uppercase ">
                     Quantity
                   </th>
                 </tr>
               </thead>
               <tbody className=" ">
                 {getPayment?.delivery?.map((item) => (
-                  <tr key={item._id}>
-                    <td>{moment(item.date).format("ll")}</td>
-                    <td>{item.grn}</td>
-                    <td>{item.quantity}</td>
+                  <tr key={item._id} >
+                    <td className="text-[#EEEBE3]">{moment(item.date).format("ll")}</td>
+                    <td className="text-[#EEEBE3]">{item.grn}</td>
+                    <td className="text-[#EEEBE3]">{item.quantity}</td>
                   </tr>
                 ))}
               </tbody>
-              <tfoot className="text-center border border-base-300 shadow-sm">
+              <tfoot className="text-center shadow-sm">
                 <tr>
-                  <th className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  <th className="text-start text-xs font-medium text-[#EEEBE3] uppercase ">
                     Remaining
                   </th>
                 </tr>
                 <tr>
-                  <td className="text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                  <td className="text-start text-xs font-medium text-[#EEEBE3] uppercase ">
                     {remainingQuantity}
                   </td>
                 </tr>

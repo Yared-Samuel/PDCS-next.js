@@ -69,7 +69,6 @@ const PaymentForm = () => {
     }
   };
 
-  
   React.useEffect(() => {
     const fetchPayments = async () => {
       setIsLoading(true);
@@ -77,14 +76,13 @@ const PaymentForm = () => {
         const res = await fetch("/api/payments", {
           method: "GET",
           headers: {
-            
             "Content-Type": "application/json",
           },
         });
         const data = await res.json();
         setPayments(data);
       } catch (error) {
-        setError(error)
+        setError(error);
         console.log(error);
       } finally {
         setIsLoading(false);
@@ -93,7 +91,7 @@ const PaymentForm = () => {
 
     fetchPayments();
   }, []);
-  
+
   const itemList = async () => {
     try {
       const res = await fetch("/api/items", {
@@ -114,23 +112,21 @@ const PaymentForm = () => {
     const fetchItems = async () => {
       const items = await itemList();
       setItems(items);
-
-    }
+    };
     fetchItems();
   }, []);
   return (
     <>
-    
-      <div className="card bg-base-200 w-full shadow-xl mb-6">
-        <div className="card-body">
+      <div className="card bg-base-200 w-full shadow-xl mb-2">
+        
           <h2 className="card-title">Payment Form</h2>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex gap-2 justify-between">
-              
+          <form onSubmit={handleSubmit} className="flex flex-col ">
+            <div className="md:flex md:justify-between text-[10px]">
+              <div className="flex gap-1 md:flex-col">
                 <select
                   id="item"
                   name="item"
-                  className="select select-bordered w-1/4 max-w-xs"
+                  className="select select-bordered w-full"
                 >
                   <option value="">Select an item</option>
                   {items.map((item) => (
@@ -139,52 +135,55 @@ const PaymentForm = () => {
                     </option>
                   ))}
                 </select>
-              
-              <label className="input input-bordered flex items-center gap-2 w-1/4">
-                Date
-                <input type="date" id="date" name="date" className="grow" />
-              </label>
-              <label className="input input-bordered flex items-center gap-2 w-1/4">
-                Quantity
-                <input
-                  className="grow"
-                  type="number"
-                  id="quantity"
-                  name="quantity"
-                />
-              </label>
-            </div>
 
-            <div className="flex gap-2 justify-between">
-              <label className="input input-bordered flex items-center gap-2 w-1/4">
-                Sales Order
-                <input
-                  className="grow"
-                  type="number"
-                  id="salesOrder"
-                  name="salesOrder"
-                />
-              </label>
+                <label className="input input-bordered flex items-center gap-2 w-1/2 md:w-full">
+                  Date
+                  <input type="date" id="date" name="date" className="grow" />
+                </label>
+              </div>
+              <div className="flex gap-1 md:flex-col">
+                <label className="input input-bordered flex items-center gap-2 w-1/2 md:w-full">
+                  Quantity
+                  <input
+                    className="grow"
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                  />
+                </label>
+                <label className="input input-bordered flex items-center gap-2 w-1/2 md:w-full">
+                  Sales Order
+                  <input
+                    className="grow"
+                    type="number"
+                    id="salesOrder"
+                    name="salesOrder"
+                  />
+                </label>
+              </div>
+              <div className="flex gap-1 md:flex-col">
+                <label className="input input-bordered flex items-center gap-2 w-1/2 md:w-full">
+                  Payment Detail
+                  <input
+                    className="grow"
+                    type="number"
+                    id="paymentDetail"
+                    name="paymentDetail"
+                  />
+                </label>
 
-              <label className="input input-bordered flex items-center gap-2 w-1/4">
-                Payment Detail
-                <input
-                  className="grow"
-                  type="number"
-                  id="paymentDetail"
-                  name="paymentDetail"
-                />
-              </label>
-              
                 <select
                   id="item"
                   name="freeOrPaid"
-                  className="select select-bordered w-1/4 max-w-xs"
+                  className="select select-bordered w-full"
                 >
                   <option value="paid">paid</option>
                   <option value="free">free</option>
                 </select>
+              </div>
             </div>
+
+            <div className="flex gap-2 justify-between"></div>
 
             <div className="card-actions justify-end">
               <button className="btn btn-primary" type="submit">
@@ -192,48 +191,46 @@ const PaymentForm = () => {
               </button>
             </div>
           </form>
-        </div>
+        
       </div>
-      
 
       <div className="card bg-base-200 w-full shadow-xxl overflow-x-auto p-4">
-      <h2 className="card-title">Payments</h2>
-      {isLoading && <Loading />}
-      {!isLoading && (
-        <DataTable  className="display table table-xs">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Payment</th>
-            <th>Type</th>
-            <th>Sles Order</th>
-            <th>Deliver</th>
-          </tr>
-        </thead>
-        <tbody>
-          {payments.map((payment) => (
-            <tr key={payment._id}>
-              <td>{moment(payment.date).format("ll")}</td>
-              <td>{payment.item.name}</td>
-              <td>{payment.quantity}</td>
-              <td>{payment.paymentDetail}</td>
-              <td>{payment.freeOrPaid}</td>
-              <td>{payment.salesOrder}</td>
-              <td>
-                <Link href={`/pages/delivery/${payment.salesOrder}`}>
-                  <button>
-                    <TbTruckDelivery size={25} color="green" />
-                  </button>
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </DataTable>
-      )}
-        
+        <h2 className="card-title">Payments</h2>
+        {isLoading && <Loading />}
+        {!isLoading && (
+          <DataTable className="display table  table-auto text-[8px] md:text-[15px]">
+            <thead>
+              <tr className="text-[7px] md:text-[15px]  ">
+                <th>Date</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Payment</th>
+                <th>Type</th>
+                <th>Sles Order</th>
+                <th>Deliver</th>
+              </tr>
+            </thead>
+            <tbody>
+              {payments.map((payment) => (
+                <tr key={payment._id} className="n gap-0">
+                  <td>{moment(payment.date).format("ll")}</td>
+                  <td>{payment.item.name}</td>
+                  <td>{payment.quantity}</td>
+                  <td>{payment.paymentDetail}</td>
+                  <td>{payment.freeOrPaid}</td>
+                  <td>{payment.salesOrder}</td>
+                  <td>
+                    <Link href={`/pages/delivery/${payment.salesOrder}`}>
+                      <button>
+                        <TbTruckDelivery size={25} color="green" />
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </DataTable>
+        )}
       </div>
     </>
   );
