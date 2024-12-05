@@ -32,6 +32,7 @@ export const GET = async (request) => {
   await connect();
   try {
     const items = await Items.find({});
+    console.log(items)
     return new NextResponse(JSON.stringify(items), { status: 200 });
   } catch (err) {
     return new NextResponse(err, { status: 500 });
